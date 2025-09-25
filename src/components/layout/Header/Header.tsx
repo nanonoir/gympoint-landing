@@ -4,6 +4,7 @@ import { ThemeSwitcher } from "../../ui"
 import { useState } from "react";
 import { menuIcon } from "../../../assets/imgs";
 import { Container } from "../Container";
+import { useTheme } from "../../../hooks";
 
 
 const navLinks = [
@@ -13,6 +14,7 @@ const navLinks = [
 ];
 
 export const Header = () => {
+    const { theme } = useTheme()
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const closeMenu = () => {
@@ -21,7 +23,14 @@ export const Header = () => {
 
     return (
         <header
-         className="fixed top-0 left-0 right-0 z-50 flex h-20 items-center bg-primary-light/80 dark:bg-primary-dark/80 backdrop-blur-sm shadow-md transition-colors duration-300"
+            className={`
+                fixed top-0 left-0 right-0 z-50 h-20 flex items-center
+                backdrop-blur-sm shadow-md transition-colors duration-300
+                ${theme === 'light'
+                ? 'bg-zinc-300 text-gray-800'
+                : 'bg-zinc-900 text-gray-100'
+                }
+            `}
         >
             <Container className="flex justify-between items-center w-full rg">
                 <Logo to="#home"/>
@@ -32,7 +41,13 @@ export const Header = () => {
                             key={link.href}
                             smooth
                             to={link.href}
-                            className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-display text-xl"
+                            className={`
+                                transition-colors font-display text-xl
+                                ${theme === 'light'
+                                ? 'bg-zinc-300 text-gray-800 hover:text-blue-600'
+                                : 'bg-zinc-900 text-gray-100 hover:text-blue-400'
+                                }
+                            `} 
                         >
                             {link.label}
                         </NavHashLink>
