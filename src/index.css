@@ -19,3 +19,15 @@
   --color-button-secondary-border: #4F9CF9;
   --color-button-secondary-hover-bg: #4F9CF9;
 }
+
+body {
+  @apply font-display;
+}
+
+body.light {
+  @apply bg-zinc-200 transition-colors duration-300;
+}
+
+body.dark {
+  @apply bg-zinc-900 transition-colors duration-300;
+}

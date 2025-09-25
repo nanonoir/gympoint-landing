@@ -1,6 +1,6 @@
 import { NavHashLink } from "react-router-hash-link"
 import { Button, Logo } from "../../ui"
-import { ThemeSwitcher } from "../../ui/ThemeSwitcher"
+import { ThemeSwitcher } from "../../ui"
 import { useState } from "react";
 import { menuIcon } from "../../../assets/imgs";
 import { Container } from "../Container";
@@ -23,7 +23,7 @@ export const Header = () => {
         <header
          className="fixed top-0 left-0 right-0 z-50 flex h-20 items-center bg-primary-light/80 dark:bg-primary-dark/80 backdrop-blur-sm shadow-md transition-colors duration-300"
         >
-            <Container className="flex justify-between items-center w-full">
+            <Container className="flex justify-between items-center w-full rg">
                 <Logo to="#home"/>
 
                 <nav className="hidden md:flex items-center gap-6">
