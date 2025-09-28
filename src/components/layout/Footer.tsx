@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaInstagram, FaTiktok, FaYoutube, FaLinkedin } from 'react-icons/fa';
 import { IoShieldCheckmark } from "react-icons/io5";
-import { useTheme } from "../../../hooks";
+import { useTheme } from "../../hooks";
 
 interface FooterSection {
     title: string;

@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import type React from "react";
 
 type Variant = "primary" | "secondary";
 
@@ -9,9 +8,4 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
     children: ReactNode;
     variant?: Variant;
     size?: Size;
-}
-
-export interface LogoProps {
-    size?: Size;
-    to?: string;
 }

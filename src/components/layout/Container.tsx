@@ -1,5 +1,5 @@
 import React from 'react';
-import type { ContainerProps } from '../../../types';
+import type { ContainerProps } from '../../types';
 
 export const Container: React.FC<ContainerProps> = ({ children, className }) => {
   return (

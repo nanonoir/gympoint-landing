@@ -11,10 +11,10 @@ export const Button: React.FC<ButtonProps> = ({
     
     const variantStyle = {
         primary:
-        'bg-button-primary-bg text-button-primary-text hover:bg-button-primary-hover',
+        'bg-secondary text-primary-light hover:bg-button-hover',
 
         secondary:
-        'bg-button-secondary-bg text-button-secondary-text border border-button-secondary-border hover:bg-button-secondary-hover-bg/10',
+        'bg-button-secondary-bg text-secondary border-1 border-secondary hover:bg-transparent/10',
     };
 
     const sizeStyle = {

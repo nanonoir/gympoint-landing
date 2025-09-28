@@ -1,10 +1,10 @@
 import { NavHashLink } from "react-router-hash-link"
-import { Button, Logo } from "../../ui"
-import { ThemeSwitcher } from "../../ui"
+import { Button, Logo } from "../ui"
+import { ThemeSwitcher } from "../ui"
 import { useState } from "react";
-import { menuIcon } from "../../../assets/imgs";
-import { Container } from "../Container";
-import { useTheme } from "../../../hooks";
+import { closeMenuIcon, menuIcon } from "../../assets/imgs";
+import { useTheme } from "../../hooks";
+import { Container } from "./Container";
 
 
 const navLinks = [
@@ -42,10 +42,10 @@ export const Header = () => {
                             smooth
                             to={link.href}
                             className={`
-                                transition-colors font-display text-xl
+                                transition-colors font-display text-xl roun
                                 ${theme === 'light'
-                                ? 'bg-zinc-300 text-gray-800 hover:text-blue-600'
-                                : 'bg-zinc-900 text-gray-100 hover:text-blue-400'
+                                ? 'bg-zinc-300 text-gray-800 hover:text-secondary'
+                                : 'bg-zinc-900 text-gray-100 hover:text-secondary'
                                 }
                             `} 
                         >
@@ -67,13 +67,18 @@ export const Header = () => {
                         aria-label={isMenuOpen ? "Cerrar menú" : "Abrir menú"}
                         aria-expanded={isMenuOpen}
                     >
-                        {menuIcon}
-                        {isMenuOpen ? 'Cerrar' : 'Abrir'} 
+                        <img src={isMenuOpen ? closeMenuIcon : menuIcon} className="w-12"/>
                     </button>
                 </div>
                 
                 {isMenuOpen && (
-                    <nav className="absolute top-0 left-0 w-full h-screen bg-primary-light dark:bg-primary-dark md:hidden flex flex-col items-center justify-center gap-8 text-2xl">
+                    <nav 
+                        className={`absolute top-0 left-0 w-full h-screen md:hidden flex flex-col items-center justify-center gap-8 text-2xl
+                        ${theme === 'light'
+                        ? 'bg-primary-light'
+                        : 'bg-primary-dark'
+                        }`} 
+                    >
                         {navLinks.map((link) => (
                             <NavHashLink key={link.href} smooth to={link.href} onClick={closeMenu}>
                                 {link.label}
