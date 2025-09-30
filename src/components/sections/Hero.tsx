@@ -1,17 +1,12 @@
-import React, { useState } from 'react';
-import { Heading } from '../ui/Heading';
-import { Paragraph } from '../ui/Paragraph';
-import { Button } from '../ui/Button';
+import { forwardRef } from 'react';
+import { useMap } from '../../hooks/useMap';
+import { Heading, Paragraph, Button } from '../ui';
 
-export const Hero: React.FC = () => {
-    const [showMap, setShowMap] = useState(false);
-
-    const handleDemo = () => {
-        setShowMap(!showMap);
-    };
+export const Hero = forwardRef<HTMLElement>((_, ref) => {
+    const { isMapOpen, toggleMap } = useMap();
 
     return (
-        <section className="pt-12 pb-20 px-8">
+        <section ref={ref} className="pt-12 pb-20 px-8">
             <div className="max-w-4xl mx-auto text-center space-y-8">
 
                 <div className="space-y-2">
@@ -32,7 +27,7 @@ export const Hero: React.FC = () => {
                     <Button 
                         variant="primary" 
                         size="lg"
-                        onClick={handleDemo}
+                        onClick={toggleMap}
                     >
                         PROBAR DEMO
                     </Button>
@@ -41,7 +36,7 @@ export const Hero: React.FC = () => {
                     </Button>
                 </div>
 
-                {showMap && (
+                {isMapOpen && (
                     <div className="mt-12 transition-all duration-500 ease-in-out">
                         <div className="bg-gray-200 rounded-lg h-96 flex items-center justify-center">
                             <Paragraph color="muted" align="center">
@@ -53,4 +48,6 @@ export const Hero: React.FC = () => {
             </div>
         </section>
     );
-};
+});
+
+Hero.displayName = 'Hero';

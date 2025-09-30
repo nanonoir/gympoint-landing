@@ -1,3 +1,5 @@
 export * from './ui/index'
 export * from './theme.types'
 export * from './layout.types'
+export * from './map.types'
+export * from './socialMedia.types'

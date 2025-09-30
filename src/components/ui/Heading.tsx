@@ -2,13 +2,12 @@ import type React from "react";
 import { useTheme } from "../../hooks";
 import type { HeadingProps } from "../../types";
 
-
-
 export const Heading: React.FC<HeadingProps> = ({
     children,
     variant = 'h1',
     color = 'default',
     align = 'center',
+    className = '',
     ...props
 }) => {
     const { theme } = useTheme();
@@ -36,14 +35,15 @@ export const Heading: React.FC<HeadingProps> = ({
 
     const Tag = variant;
 
-    const className = `
+    const computedClassName = `
         ${variantH[variant]}
         ${colorStyle[color]}
         ${alignStyle[align]}
+        ${className}
     `;
 
     return (
-        <Tag className={className.trim()} {...props}>
+        <Tag className={computedClassName.trim()} {...props}>
             {children}
         </Tag>
     );

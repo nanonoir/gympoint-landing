@@ -5,6 +5,7 @@ export const Button: React.FC<ButtonProps> = ({
     children,
     variant = 'primary',
     size = 'md',
+    className = '',
     ...props
 }) => {
     const standard = 'rounded-lg shadow-md transition-transform transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed';
@@ -23,14 +24,15 @@ export const Button: React.FC<ButtonProps> = ({
         lg: 'px-6 py-3 text-lg',
     };
 
-    const className = `
+    const computedClassName = `
         ${standard}
         ${variantStyle[variant]}
         ${sizeStyle[size]}
+        ${className}
     `;
 
     return (
-        <button className={className.trim()} {...props}>
+        <button className={computedClassName.trim()} {...props}>
             {children}
         </button>
   );

@@ -1,6 +1,8 @@
 import { progress, routine, search, streak } from '../../assets/imgs';
+import { featuresContent } from '../../data';
 import { useTheme } from '../../hooks';
 import { Heading, Paragraph } from '../ui';
+import { FeatureItem } from '../ui/';
 
 export const Features: React.FC = () => {
     const { theme } = useTheme()
@@ -39,30 +41,16 @@ export const Features: React.FC = () => {
                     </div>
                 </div>
                 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                    <div className="space-y-6">
-                        <Heading variant="h2" align="left">
-                            Encuentra el gimnasio ideal en segundos
-                        </Heading>
-                        <Paragraph>
-                            Con nuestra función de búsqueda inteligente, GymPoint te muestra los gimnasios más cercanos según tu ubicación. Filtrá por tipo de entrenamiento, horarios, instalaciones o calificaciones de otros usuarios. Ya sea que busques un box de crossfit, un centro de musculación o clases funcionales, lo encontrarás en segundos.
-                        </Paragraph>
-                        <div className="flex items-start gap-4">
-                            <div className="text-4xl font-bold text-secondary leading-none">
-                                99%
-                            </div>
-                            <div>
-                                <Paragraph>
-                                    de los usuarios ahorro tiempo para encontrar su primer gimnasio o uno nuevo que se adapta a sus necesidades
-                                </Paragraph>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div className="bg-white rounded-2xl shadow-lg p-8 h-80 flex items-center justify-center">
-                        <Paragraph align="center" color="muted">Video Ilustrativo</Paragraph>
-                    </div>
+                <div className="space-y-20 mt-16">
+                {featuresContent.map((feature, index) => (
+                    <FeatureItem 
+                    key={feature.id} 
+                    feature={feature}
+                    reverse={index % 2 !== 0} 
+                    />
+                ))}
                 </div>
+
             </div>
         </section>
     );
