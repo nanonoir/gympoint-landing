@@ -1,10 +1,6 @@
 import './App.css'
-import { Footer, Header } from './components/layout';
-import { Features, Hero } from './components/sections';
-import { About } from './components/sections/About';
-import { GymRegister } from './components/sections/GymRegister';
-import { SocialMedia } from './components/sections/SocialMedia';
-import { Testimonials } from './components/sections/Testimonials';
+import { Footer, Header, Main } from './components/layout';
+import { Features, Hero, About, Testimonials, GymRegister, SocialMedia, Contact } from './components/sections';
 import './index.css';
 
 function App() {
@@ -12,14 +8,15 @@ function App() {
   return (
     <>
       <Header />
-      <main className="min-h-screen space-y-6 mt-20">
+      <Main>
         <Hero />
         <Features />
         <About />
         <Testimonials />
         <GymRegister />
         <SocialMedia />
-      </main>
+        <Contact />
+      </Main>
       <Footer />
     </>
   )

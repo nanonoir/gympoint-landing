@@ -1,55 +1,60 @@
-import { testimonialsData } from '../../data';
-import { useMap } from '../../hooks/useMap';
-import { Heading, Card, StarRating, Button } from '../ui';
+import { motion } from 'framer-motion';
+import { testimonialsData } from '../../data/testimonialsData';
+import { Heading, Card, StarRating, Button, DemoButton } from '../ui';
+import { useScrollDirection } from '../../hooks';
+import { mainContainer, fadeInUp, secondaryContainer, fadeInLeft } from '../../animations/variants';
 
 export const Testimonials: React.FC = () => {
-    const { openMap } = useMap();
-
-    const handleProbar = () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        
-        setTimeout(() => {
-            openMap();
-        }, 800);
-    };
+    const direction = useScrollDirection();
 
     return (
-        <section className="py-20 px-8">
+        <motion.section 
+            className="py-20 px-8"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.1 }}
+            variants={mainContainer(direction)}
+            id='testimonials'
+        >
             <div className="max-w-6xl mx-auto">
-                <Heading variant="h1" align="center" className="mb-16">
-                    Opiniones
-                </Heading>
+                <motion.div variants={fadeInUp}>
+                    <Heading variant="h1" align="center" className="mb-16">
+                        Opiniones
+                    </Heading>
+                </motion.div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <motion.div 
+                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12"
+                    variants={secondaryContainer}
+                >
                     {testimonialsData.map((testimonial) => (
-                        <Card key={testimonial.id} variant="default" padding="md">
-                            <div className="space-y-4">
-                                <div>
-                                    <h4 className="font-bold text-lg">{testimonial.name}</h4>
-                                    <p className="text-sm text-muted-light">{testimonial.role}</p>
+                        <motion.div key={testimonial.id} variants={fadeInLeft}>
+                            <Card variant="default" padding="md">
+                                <div className="space-y-4">
+                                    <div>
+                                        <h4 className="font-bold text-lg">{testimonial.name}</h4>
+                                        <p className="text-sm text-muted-light">{testimonial.role}</p>
+                                    </div>
+                                    <p className="text-sm italic">"{testimonial.comment}"</p>
+                                    <StarRating rating={testimonial.rating} />
                                 </div>
-
-                                <p className="text-sm italic">"{testimonial.comment}"</p>
-
-                                <StarRating rating={testimonial.rating} />
-                            </div>
-                        </Card>
+                            </Card>
+                        </motion.div>
                     ))}
-                </div>
+                </motion.div>
 
-                <div className="flex gap-4 justify-center flex-wrap">
-                    <Button 
-                        variant="primary" 
-                        size="lg"
-                        onClick={handleProbar}
-                    >
-                        PROBAR
-                    </Button>
+                <motion.div 
+                    className="flex gap-4 justify-center flex-wrap"
+                    variants={fadeInUp}
+                >
+                    <DemoButton size='lg' className='uppercase'/>
                     <Button variant="secondary" size="lg">
-                        DESCARGAR APP
+                        <a href="https://www.apple.com/ar/ios/app-store/" target="_blank">
+                            DESCARGAR APP
+                        </a>
                     </Button>
-                </div>
+                </motion.div>
             </div>
-        </section>
+        </motion.section>
     );
 };

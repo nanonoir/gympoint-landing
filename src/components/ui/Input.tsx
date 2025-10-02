@@ -7,6 +7,7 @@ export const Input: React.FC<InputProps> = ({
     error,
     variant = 'default',
     helperText = 'Ingresa tu email principal',
+    className = '',
     size = 'md',
     ...props
 }) => {
@@ -31,18 +32,21 @@ export const Input: React.FC<InputProps> = ({
         lg: 'px-5 py-3 text-lg h-12',      
     };
 
-    const className = `
+    const computedClassName = `
         ${standard}
         ${variantStyle[currentVariant]}
         ${sizeStyle[size]}
+        ${className}
     `;
 
     return (
         <div className="mb-4">
             {label && <label className={`block mb-2 text-sm font-medium ${theme === 'light' ? 'text-gray-900' : 'text-gray-200'}`}>{label}</label>}
-            <input className={className.trim()} {...props} />
+            <input className={computedClassName.trim()} {...props} />
             {error && <span className="block mt-1 text-error text-sm">{error}</span>}
-            {helperText && !error && <span className="block mt-1 text-gray-500 text-sm">{helperText}</span>}
+            {helperText && !error && helperText.trim() !== '' && (
+                <span className="block mt-1 text-gray-500 text-sm">{helperText}</span>
+            )}
         </div>
     );
 };

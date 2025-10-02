@@ -1,36 +1,38 @@
-import type { FeatureContent } from '../../data';
-import { Heading } from './Heading';
-import { Paragraph } from './Paragraph';
+import { motion } from 'framer-motion';
+import { Heading, Paragraph } from '../ui';
+import type { FeatureItemProps } from '../../types';
+import { fadeInLeft, fadeInRight } from '../../animations/variants';
 
-interface FeatureItemProps {
-  feature: FeatureContent;
-  reverse?: boolean;
-}
+export const FeatureItem: React.FC<FeatureItemProps> = ({ feature, reverse }) => {
 
-export const FeatureItem: React.FC<FeatureItemProps> = ({ feature, reverse = false }) => {
-  return (
-    <div className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${reverse ? 'lg:flex-row-reverse' : ''}`}>
-      <div className="space-y-6">
-        <Heading variant="h2" align="left">
-          {feature.title}
-        </Heading>
-        <Paragraph>{feature.description}</Paragraph>
-        
-        <div className="flex items-start gap-4">
-          <div className="text-4xl font-bold text-secondary leading-none">
-            {feature.stat.number}
-          </div>
-          <div>
-            <Paragraph>{feature.stat.description}</Paragraph>
-          </div>
-        </div>
-      </div>
-      
-      <div className="bg-white rounded-2xl shadow-lg p-8 h-80 flex items-center justify-center">
-        <Paragraph align="center" color="muted">
-          {feature.mediaType === 'video' ? 'Video Ilustrativo' : 'Imagen'}
-        </Paragraph>
-      </div>
-    </div>
-  );
+    return (
+        <motion.div 
+            id={feature.id}
+            className="grid grid-cols-1 lg:grid-cols-2 gap-12 overflow-hidden items-center"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.3 }}
+        >
+          <motion.div className={`space-y-6 ${reverse ? 'lg:order-2' : 'lg:order-1'}`} variants={fadeInLeft}>
+            <Heading variant="h2" align="left">{feature.title}</Heading>
+            <Paragraph>{feature.description}</Paragraph>
+            
+            <div className="flex items-start gap-4">
+              <div className="text-4xl font-bold text-secondary leading-none">
+                  {feature.stat.number}
+              </div>
+              <Paragraph>{feature.stat.description}</Paragraph>
+            </div>
+          </motion.div>
+          
+          <motion.div 
+            className={`bg-white rounded-2xl shadow-lg p-8 h-80 flex items-center justify-center ${reverse ? 'lg:order-1' : 'lg:order-2'}`}
+            variants={fadeInRight}
+          >
+            <Paragraph align="center" color="muted">
+                {feature.mediaType === 'video' ? 'Video Ilustrativo' : 'Imagen'}
+            </Paragraph>
+          </motion.div>
+        </motion.div>
+    );
 };

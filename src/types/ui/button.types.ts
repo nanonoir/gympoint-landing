@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-type Variant = "primary" | "secondary";
+type Variant = "primary" | "secondary" | "danger";
 
 type Size = 'sm' | 'md' | 'lg';
 

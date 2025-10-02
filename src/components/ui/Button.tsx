@@ -16,6 +16,9 @@ export const Button: React.FC<ButtonProps> = ({
 
         secondary:
         'bg-button-secondary-bg text-secondary border-1 border-secondary hover:bg-transparent/10',
+        
+        danger:
+        'bg-rose-500 text-white hover:bg-rose-600'
     };
 
     const sizeStyle = {

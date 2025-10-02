@@ -7,6 +7,7 @@ export const TextArea: React.FC<TextareaProps> = ({
     error,
     variant = 'default',
     helperText = 'Escribe tu mensaje aqui...',
+    className = '',
     size = 'md',
     ...props
 }) => {
@@ -31,17 +32,18 @@ export const TextArea: React.FC<TextareaProps> = ({
         lg: 'px-5 py-3 text-lg min-h-32',      
     };
 
-    const className = `
+    const computedClassName = `
         ${standard}
         ${variantStyle[currentVariant]}
         ${sizeStyle[size]}
+        ${className}
     `;
 
     return (
         <div className="textarea-wrapper mb-4">
             {label && <label className={`block mb-2 text-sm font-medium ${theme === 'light' ? 'text-gray-900' : 'text-gray-200'}`}>{label}</label>}
             <textarea
-                className={className.trim()} 
+                className={computedClassName.trim()} 
                 rows={size === 'sm' ? 3 : size === 'lg' ? 6 : 4}
                 {...props} 
             />
