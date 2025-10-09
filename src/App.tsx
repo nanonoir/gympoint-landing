@@ -1,25 +1,16 @@
 import './App.css'
-import { Footer, Header, Main } from './components/layout';
-import { Features, Hero, About, Testimonials, GymRegister, SocialMedia, Contact } from './components/sections';
-import './index.css';
+import { Routes, Route } from 'react-router-dom';
+import { LandingPage } from './pages';
+import { RegisterGymPage } from './pages';
 
 function App() {
-
   return (
-    <>
-      <Header />
-      <Main>
-        <Hero />
-        <Features />
-        <About />
-        <Testimonials />
-        <GymRegister />
-        <SocialMedia />
-        <Contact />
-      </Main>
-      <Footer />
-    </>
-  )
+    <Routes>
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/register-gym" element={<RegisterGymPage />} />
+    </Routes>
+  );
 }
 
-export default App
+export default App;
+

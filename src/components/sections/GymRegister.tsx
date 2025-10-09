@@ -2,9 +2,11 @@ import { motion } from 'framer-motion';
 import { Heading, Paragraph, Button } from '../ui';
 import { fadeInLeft, fadeInRight, fadeInUp, mainContainer } from '../../animations/variants';
 import { useScrollDirection } from '../../hooks';
+import { useNavigate } from 'react-router-dom';
 
 export const GymRegister: React.FC = () => {
     const direction = useScrollDirection();
+    const navigate = useNavigate();
 
     return (
         <motion.section
@@ -62,10 +64,8 @@ export const GymRegister: React.FC = () => {
                 </div>
 
                 <motion.div variants={fadeInUp}>
-                    <Button size="lg" className='bg-white font-semibold border-0 text-blue-950 hover:bg-white'>
-                        <a target='_blank' href='https://docs.google.com/forms/d/e/1FAIpQLSeKxQKrHxxVyFD0NCz6cfcfK-0FpfMw1cURZZ_lS2O6hwbrIA/viewform?usp=dialog'>
+                    <Button onClick={() => navigate('/register-gym')} size="lg" className='bg-white font-semibold border-0 text-blue-950 hover:bg-white'>
                             REGISTRAR GIMNASIO
-                        </a>
                     </Button>
                 </motion.div>
             </div>
