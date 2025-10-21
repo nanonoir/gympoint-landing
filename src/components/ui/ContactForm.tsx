@@ -44,7 +44,8 @@ export const ContactForm: React.FC = () => {
                     onChange={handleChange}
                     rows={5}
                     className="w-full md:text-lg min-h-[120px] md:min-h-[160px]"
-                    required 
+                    required
+                    helperText=''
                 />
             </motion.div>
             

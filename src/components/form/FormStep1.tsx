@@ -2,6 +2,7 @@ import { useState } from 'react';
 import validator from 'validator';
 import { Input } from '../ui/Input';
 import type { GymFormData } from '../../types/gym.types';
+import { LocationInput } from '../ui/LocationInput';
 
 interface FormStep1Props {
   formData: GymFormData;
@@ -13,7 +14,6 @@ export const FormStep1: React.FC<FormStep1Props> = ({ formData, updateField }) =
     name: '',
     email: '',
     phone: '',
-    address: '',
   });
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,8 +39,22 @@ export const FormStep1: React.FC<FormStep1Props> = ({ formData, updateField }) =
     }
   };
 
+  // Manejar cambio de ubicación desde el mapa
+  const handleLocationChange = (data: {
+    address: string;
+    city: string;
+    latitude: number;
+    longitude: number;
+  }) => {
+    updateField('location.address', data.address);
+    updateField('location.city', data.city);
+    updateField('location.latitude', data.latitude);
+    updateField('location.longitude', data.longitude);
+  };
+
   return (
     <div className="space-y-6">
+      {/* Nombre del Gimnasio */}
       <Input
         label="¿Cómo se llama el gimnasio? *"
         type="text"
@@ -51,26 +65,18 @@ export const FormStep1: React.FC<FormStep1Props> = ({ formData, updateField }) =
         required
       />
 
-      <Input
-        label="¿Dónde se encuentra? *"
-        type="text"
-        value={formData.location.address}
-        onChange={(e) => updateField('location.address', e.target.value)}
-        placeholder="Av. 9 de Julio 5678, Resistencia, Chaco"
-        helperText="Dirección completa del gimnasio"
-        required
-      />
+      {/* Mapa de Ubicación */}
+      <div>
+        <LocationInput
+          address={formData.location.address}
+          city={formData.location.city}
+          latitude={formData.location.latitude}
+          longitude={formData.location.longitude}
+          onLocationChange={handleLocationChange}
+        />
+      </div>
 
-      <Input
-        label="Ciudad *"
-        type="text"
-        value={formData.location.city}
-        onChange={(e) => updateField('location.city', e.target.value)}
-        placeholder="Ej: Resistencia"
-        helperText="Ciudad donde se encuentra el gimnasio"
-        required
-      />
-
+      {/* Email */}
       <Input
         label="Correo electrónico de contacto *"
         type="email"
@@ -82,6 +88,7 @@ export const FormStep1: React.FC<FormStep1Props> = ({ formData, updateField }) =
         required
       />
 
+      {/* Teléfono */}
       <Input
         label="Teléfono / Celular de contacto *"
         type="tel"
@@ -93,6 +100,7 @@ export const FormStep1: React.FC<FormStep1Props> = ({ formData, updateField }) =
         required
       />
 
+      {/* Indicador de campos obligatorios */}
       <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
         <p className="text-sm text-blue-800 dark:text-blue-200">
           <strong>Nota:</strong> Los campos marcados con <span className="text-red-500">*</span> son obligatorios para continuar.

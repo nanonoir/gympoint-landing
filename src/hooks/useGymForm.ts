@@ -78,17 +78,19 @@ export const useGymForm = () => {
     });
   };
 
-  const isStep1Complete = () => {
-    return !!(
-      formData.name &&
-      formData.location.address &&
-      formData.location.city &&
-      formData.location.latitude &&
-      formData.location.longitude &&
-      formData.contact.email &&
-      formData.contact.phone
-    );
-  };
+const isStep1Complete = () => {
+  const { name, location, contact } = formData;
+  
+  return !!(
+    name.trim() &&
+    location.address.trim() &&
+    location.city.trim() &&
+    location.latitude !== null &&
+    location.longitude !== null &&
+    contact.email.trim() &&
+    contact.phone.trim()
+  );
+};
 
   const clearDraft = () => {
     localStorage.removeItem(STORAGE_KEY);

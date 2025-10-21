@@ -1,5 +1,7 @@
 import { Input } from '../ui/Input';
-import { TRAINING_TYPES, type GymFormData } from '../../types';
+import type { GymFormData } from '../../types/gym.types';
+import { TRAINING_TYPES } from '../../types/gym.types';
+import { useTheme } from '../../hooks';
 import { CheckboxGroup, PhotoUploader } from '../ui';
 
 interface FormStep2Props {
@@ -8,13 +10,20 @@ interface FormStep2Props {
 }
 
 export const FormStep2: React.FC<FormStep2Props> = ({ formData, updateField }) => {
+  const { theme } = useTheme();
+
   return (
     <div className="space-y-8">
+      {/* Fotos */}
       <div>
-        <h3 className="text-lg font-semibold mb-2">
+        <h3 className={`text-lg font-semibold mb-2 ${
+          theme === 'light' ? 'text-gray-900' : 'text-gray-100'
+        }`}>
           Mostrá tus instalaciones
         </h3>
-        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+        <p className={`text-sm mb-4 ${
+          theme === 'light' ? 'text-gray-700' : 'text-gray-300'
+        }`}>
           Las fotos ayudan a los usuarios a conocer tu gimnasio antes de visitarlo.
         </p>
         <PhotoUploader
@@ -24,6 +33,7 @@ export const FormStep2: React.FC<FormStep2Props> = ({ formData, updateField }) =
         />
       </div>
 
+      {/* Tipos de Entrenamiento */}
       <div>
         <CheckboxGroup
           label="¿Qué tipo de entrenamientos ofrecen?"
@@ -34,11 +44,16 @@ export const FormStep2: React.FC<FormStep2Props> = ({ formData, updateField }) =
         />
       </div>
 
+      {/* Precios */}
       <div>
-        <h3 className="text-lg font-semibold mb-2">
+        <h3 className={`text-lg font-semibold mb-2 ${
+          theme === 'light' ? 'text-gray-900' : 'text-gray-100'
+        }`}>
           ¿Cuáles son sus precios?
         </h3>
-        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+        <p className={`text-sm mb-4 ${
+          theme === 'light' ? 'text-gray-700' : 'text-gray-300'
+        }`}>
           Esta información es muy valorada por los usuarios y mejora tu posicionamiento.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -69,8 +84,15 @@ export const FormStep2: React.FC<FormStep2Props> = ({ formData, updateField }) =
         </div>
       </div>
 
-      <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
-        <p className="text-sm text-green-800 dark:text-green-200">
+      {/* Nota */}
+      <div className={`p-4 rounded-lg ${
+        theme === 'light' 
+          ? 'bg-green-100 border border-green-300' 
+          : 'bg-green-900/30 border border-green-700'
+      }`}>
+        <p className={`text-sm ${
+          theme === 'light' ? 'text-green-900' : 'text-green-200'
+        }`}>
           ℹ️ <strong>Información opcional:</strong> Toda la información de este paso es opcional,
           pero completarla aumenta significativamente las probabilidades de que un usuario elija tu gimnasio.
         </p>

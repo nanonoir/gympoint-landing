@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Button } from '.';
+import { Button } from '../ui';
+import { useTheme } from '../../hooks';
 
 interface PhotoUploaderProps {
   photos: string[];
@@ -13,6 +14,7 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({
   onPhotosChange,
   maxPhotos = 10,
 }) => {
+  const { theme } = useTheme();
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
 
@@ -73,7 +75,7 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({
     accept: {
       'image/*': ['.jpeg', '.jpg', '.png', '.webp'],
     },
-    maxSize: 5242880,
+    maxSize: 5242880, // 5MB
     multiple: true,
     disabled: uploading || photos.length >= maxPhotos,
     noClick: false,
@@ -87,22 +89,31 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({
 
   return (
     <div className="space-y-4">
+      {/* Dropzone */}
       <div
         {...getRootProps()}
         className={`
           border-2 border-dashed rounded-lg p-8 text-center cursor-pointer
           transition-colors
-          ${isDragActive ? 'border-secondary bg-secondary/10' : 'border-gray-300 dark:border-gray-600'}
-          ${uploading || photos.length >= maxPhotos ? 'opacity-50 cursor-not-allowed' : 'hover:border-secondary'}
+          ${isDragActive ? 'border-secondary bg-secondary/10' : 
+            theme === 'light' 
+              ? 'border-gray-300 hover:border-secondary' 
+              : 'border-gray-600 hover:border-secondary'
+          }
+          ${uploading || photos.length >= maxPhotos ? 'opacity-50 cursor-not-allowed' : ''}
         `}
       >
         <input {...getInputProps()} />
         {uploading ? (
           <div>
-            <p className="text-gray-600 dark:text-gray-400 mb-2">
+            <p className={`mb-2 ${
+              theme === 'light' ? 'text-gray-700' : 'text-gray-300'
+            }`}>
               Subiendo fotos... {Math.round(uploadProgress)}%
             </p>
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+            <div className={`w-full rounded-full h-2 ${
+              theme === 'light' ? 'bg-gray-200' : 'bg-gray-700'
+            }`}>
               <div
                 className="bg-secondary h-2 rounded-full transition-all"
                 style={{ width: `${uploadProgress}%` }}
@@ -112,7 +123,9 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({
         ) : (
           <div>
             <svg
-              className="mx-auto h-12 w-12 text-gray-400"
+              className={`mx-auto h-12 w-12 ${
+                theme === 'light' ? 'text-gray-400' : 'text-gray-500'
+              }`}
               stroke="currentColor"
               fill="none"
               viewBox="0 0 48 48"
@@ -124,18 +137,23 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({
                 strokeLinejoin="round"
               />
             </svg>
-            <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+            <p className={`mt-2 text-sm ${
+              theme === 'light' ? 'text-gray-700' : 'text-gray-300'
+            }`}>
               {isDragActive
                 ? '¡Suelta las fotos aquí!'
                 : 'Arrastra fotos aquí o haz clic para seleccionar'}
             </p>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className={`text-xs mt-1 ${
+              theme === 'light' ? 'text-gray-600' : 'text-gray-400'
+            }`}>
               PNG, JPG, WEBP hasta 5MB ({photos.length}/{maxPhotos} fotos)
             </p>
           </div>
         )}
       </div>
 
+      {/* Preview de Fotos */}
       {photos.length > 0 && (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {photos.map((url, index) => (
@@ -169,8 +187,15 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({
         </div>
       )}
 
-      <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
-        <p className="text-sm text-blue-800 dark:text-blue-200">
+      {/* Disclaimer */}
+      <div className={`p-4 rounded-lg ${
+        theme === 'light' 
+          ? 'bg-blue-100 border border-blue-300' 
+          : 'bg-blue-900/30 border border-blue-700'
+      }`}>
+        <p className={`text-sm ${
+          theme === 'light' ? 'text-blue-900' : 'text-blue-200'
+        }`}>
           💡 <strong>Tip:</strong> Los gimnasios con fotos reciben hasta{' '}
           <strong>7x más visitas</strong> que aquellos sin imágenes.
         </p>

@@ -31,7 +31,7 @@ body {
 }
 
 #root {
-  overflow-x: hidden; /* ✅ Por si acaso */
+  overflow-x: hidden;
 }
 
 body.light {

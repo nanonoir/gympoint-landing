@@ -1,4 +1,6 @@
 import './App.css'
+import 'mapbox-gl/dist/mapbox-gl.css'
+import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css'
 import { Routes, Route } from 'react-router-dom';
 import { LandingPage } from './pages';
 import { RegisterGymPage } from './pages';
