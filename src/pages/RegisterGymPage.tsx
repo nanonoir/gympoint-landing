@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useGymForm, useTheme } from '../hooks';
-import { Heading, Button, ThemeSwitcher } from '../components/ui';
+import { useGymForm, useGymFormSubmit, useTheme } from '../hooks';
+import { Button, Heading, ThemeSwitcher } from '../components/ui';
 import { FormStep1, FormStep2, FormStep3 } from '../components/form';
 
 export const RegisterGymPage = () => {
@@ -14,61 +14,54 @@ export const RegisterGymPage = () => {
     currentStep,
     setCurrentStep,
     isStep1Complete,
-    exportJSON,
+    clearDraft,
   } = useGymForm();
 
+  const {
+    isSubmitting,
+    submitStatus,
+    errorMessage,
+    submitToWeb3Forms,
+    resetSubmitStatus,
+  } = useGymFormSubmit();
+
   const [showWarningModal, setShowWarningModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const totalSteps = 3;
 
   const handleNext = () => {
     if (currentStep < totalSteps) {
       setCurrentStep(currentStep + 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
   const handlePrevious = () => {
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
-  const handleFinish = () => {
+  const handleFinish = async () => {
     if (!isStep1Complete()) {
       setShowWarningModal(true);
       return;
     }
 
-    submitData();
+    const success = await submitToWeb3Forms(formData);
+
+    if (success) {
+      setShowSuccessModal(true);
+      clearDraft();
+    }
   };
 
-  const submitData = async () => {
-    const jsonData = exportJSON();
-    
-    const submitFormData = new FormData();
-    submitFormData.append('access_key', import.meta.env.VITE_WEB3FORMS_ACCESS_KEY);
-    submitFormData.append('subject', `Nuevo Registro de Gimnasio: ${formData.name}`);
-    submitFormData.append('from_name', 'GymPoint - Sistema de Registro');
-    submitFormData.append('message', jsonData);
-
-    try {
-      const response = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        body: submitFormData,
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        alert('¡Registro enviado exitosamente! Te contactaremos pronto.');
-        navigate('/');
-      } else {
-        alert('Error al enviar el registro. Por favor, intenta nuevamente.');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Error de conexión. Por favor, intenta nuevamente.');
-    }
+  const handleSuccessModalClose = () => {
+    setShowSuccessModal(false);
+    resetSubmitStatus();
+    navigate('/');
   };
 
   return (
@@ -92,7 +85,6 @@ export const RegisterGymPage = () => {
           </div>
         </div>
 
-        {/* Progress Bar */}
         <div className="mb-8">
           <div className="flex gap-2">
             {[1, 2, 3].map((step) => (
@@ -110,7 +102,6 @@ export const RegisterGymPage = () => {
           </div>
         </div>
 
-        {/* Form Steps */}
         <div className={`rounded-lg shadow-lg p-8 mb-8 ${
           theme === 'light' ? 'bg-white' : 'bg-gray-800'
         }`}>
@@ -177,44 +168,109 @@ export const RegisterGymPage = () => {
           </AnimatePresence>
         </div>
 
-        {/* Navigation Buttons */}
         <div className="flex justify-between">
           <Button
             variant="secondary"
             onClick={handlePrevious}
-            disabled={currentStep === 1}
+            disabled={currentStep === 1 || isSubmitting}
           >
             Anterior
           </Button>
 
           <div className="flex gap-4">
-            <Button variant="secondary" onClick={handleFinish}>
-              Finalizar
+            <Button 
+              variant="secondary" 
+              onClick={handleFinish}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Enviando...' : 'Finalizar'}
             </Button>
 
             {currentStep < totalSteps && (
-              <Button variant="primary" onClick={handleNext}>
+              <Button 
+                variant="primary" 
+                onClick={handleNext}
+                disabled={isSubmitting}
+              >
                 Siguiente
               </Button>
             )}
           </div>
         </div>
 
-        {showWarningModal && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className={`p-6 rounded-lg max-w-md ${
-              theme === 'light' ? 'bg-white' : 'bg-gray-800'
+        {submitStatus === 'error' && (
+          <div className={`mt-4 p-4 rounded-lg ${
+            theme === 'light' 
+              ? 'bg-red-50 border border-red-300' 
+              : 'bg-red-900/30 border border-red-700'
+          }`}>
+            <p className={`text-sm ${
+              theme === 'light' ? 'text-red-900' : 'text-red-200'
             }`}>
+              ❌ {errorMessage}
+            </p>
+          </div>
+        )}
+
+        {showWarningModal && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <motion.div 
+              className={`p-6 rounded-lg max-w-md w-full ${
+                theme === 'light' ? 'bg-white' : 'bg-gray-800'
+              }`}
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.2 }}
+            >
               <Heading variant="h3" className="mb-4">
                 ¡Atención!
               </Heading>
-              <p className="mb-6">
-                Debes completar toda la información obligatoria del Paso 1 antes de finalizar.
+              <p className={`mb-6 ${
+                theme === 'light' ? 'text-gray-700' : 'text-gray-300'
+              }`}>
+                Debes completar toda la información obligatoria del <strong>Paso 1</strong> antes de finalizar:
               </p>
+              <ul className={`mb-6 list-disc list-inside space-y-1 ${
+                theme === 'light' ? 'text-gray-600' : 'text-gray-400'
+              }`}>
+                <li>Nombre del gimnasio</li>
+                <li>Ubicación (dirección, ciudad y coordenadas)</li>
+                <li>Email de contacto</li>
+                <li>Teléfono de contacto</li>
+              </ul>
               <Button onClick={() => setShowWarningModal(false)}>
                 Entendido
               </Button>
-            </div>
+            </motion.div>
+          </div>
+        )}
+
+        {showSuccessModal && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <motion.div 
+              className={`p-6 rounded-lg max-w-md w-full ${
+                theme === 'light' ? 'bg-white' : 'bg-gray-800'
+              }`}
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.2 }}
+            >
+              <div className="text-center">
+                <div className="text-6xl mb-4">🎉</div>
+                <Heading variant="h3" className="mb-4">
+                  ¡Registro Exitoso!
+                </Heading>
+                <p className={`mb-6 ${
+                  theme === 'light' ? 'text-gray-700' : 'text-gray-300'
+                }`}>
+                  Hemos recibido la información de <strong>{formData.name}</strong>. 
+                  Te contactaremos pronto al email <strong>{formData.contact.email}</strong>.
+                </p>
+                <Button onClick={handleSuccessModalClose}>
+                  Volver al Inicio
+                </Button>
+              </div>
+            </motion.div>
           </div>
         )}
       </div>

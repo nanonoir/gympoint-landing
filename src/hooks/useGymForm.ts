@@ -100,6 +100,7 @@ const isStep1Complete = () => {
   const exportJSON = () => {
     return JSON.stringify(formData, null, 2);
   };
+  
 
   return {
     formData,
